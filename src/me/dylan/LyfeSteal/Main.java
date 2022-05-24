@@ -19,16 +19,16 @@ public class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new LyfestealEvents(), this);
 
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Lyfesteal]: SuperSpawners is enabled");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[LyfeSteal]: LyfeSteal is enabled");
         if (!config.getConfig().getBoolean("enabled"))
-            getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "[Lyfesteal]: SuperSpawners is disabled in the config!");
+            getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "[LyfeSteal]: LyfeSteal is disabled in the config!");
 
     }
 
     @Override
     public void onDisable() {
 
-        getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Lyfesteal]: SuperSpawners is disabled");
+        getServer().getConsoleSender().sendMessage(ChatColor.RED + "[LyfeSteal]: LyfeSteal is disabled");
 
     }
 }

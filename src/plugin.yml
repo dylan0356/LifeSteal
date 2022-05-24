@@ -1,5 +1,5 @@
 name: Lyfesteal
 version: 1.0.0
 author: Dylan
-main: me.dylan.Lyfesteal.Main
+main: me.dylan.LyfeSteal.Main
 api-version: 1.18
