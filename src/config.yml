@@ -1,1 +1,4 @@
 enabled: true
+defaultHealth: 20
+lossOnDeath: 2 #Max hearts is 20 so if you want the player to lose 1 heart on death, set this to 2
+banLength: "1 hour" # use as a string for example "1 day" "5 minutes"

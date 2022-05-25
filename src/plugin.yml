@@ -3,3 +3,52 @@ version: 1.0.0
 author: Dylan
 main: me.dylan.LyfeSteal.Main
 api-version: 1.18
+commands:
+  withdraw:
+    description: Withdraws hearts from you and gives to another player
+    usage: /<command> <amount> <player>
+    permission: lyfesteal.withdraw
+    Permissions:
+      lyfesteal.withdraw:
+        description: Gives access to /withdraw
+        default: op
+  setmaxhealth:
+    description: Sets the max health of a player where each "heart" is 2
+    usage: /<command> <player> <health>
+    permission: lyfesteal.setmaxhealth
+    Permissions:
+      lyfesteal.sethealth:
+        description: Gives access to /sethealth
+        default: op
+  tempban:
+    description: Bans a player for a set amount of time
+    usage: /<command> <player> <amount> <unit>
+    permission: lyfesteal.tempban
+    Permissions:
+      lyfesteal.tempban:
+        description: Gives access to /tempban
+        default: op
+  tempbanexact:
+    description: Bans a player for a set amount of time
+    usage: /<command> <player> <amount> <unit>
+    permission: lyfesteal.tempbanexact
+    Permissions:
+      lyfesteal.tempbanexact:
+        description: Gives access to /tempbanexact
+        default: op
+  unban:
+    description: Unbans a player
+    usage: /<command> <player>
+    permission: lyfesteal.unban
+    Permissions:
+      lyfesteal.unban:
+        description: Gives access to /unban
+        default: op
+  check:
+    description: Checks if the player is banned
+    usage: /<command> <player>
+    permission: lyfesteal.check
+    Permissions:
+      lyfesteal.check:
+        description: Gives access to /check
+        default: op
