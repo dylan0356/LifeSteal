@@ -59,8 +59,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TBListener(), this);
 
         LyfestealCommands Lcommands = new LyfestealCommands();
-        getCommand("withdraw").setExecutor(Lcommands);
-        getCommand("setmaxhealth").setExecutor(Lcommands);
+        getCommand("hearts").setExecutor(Lcommands);
 
         BanCommands BCommands = new BanCommands();
         getCommand("tempban").setExecutor(BCommands);

@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 
 
@@ -18,7 +19,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 Plan From Thread
 Lifesteal (Possible Help) https://github.com/SirHenryVII/LifeStealPlugin
 Basically, if you seen Lifesteal SMP its where you steal Hearts from others. I want everthing list below for this plugin in this core with the commands listed to.
-Killed Hearts - You gain a heart if you kill a player and they loose there heart, if they die on 1 heart then they get ban I can set the deathban timer in the config, also I can change ranks used from luckperms to change different ban time timers for example Default being 6 hours then MVP being 1 hour.
+also I can change ranks used from luckperms to change different ban time timers for example Default being 6 hours then MVP being 1 hour.
 Withdrawable Hearts - You can use /hearts withdraw {amount}
 Craftable Hearts - You need a crafting table, you put a netherstart in the middle then 4 gold blocks in the corner then 4 diamond blocks in the middle.
 Life Lost - If you die no matter what from you loose a heart, if you find your loot then the heart doesn't drop.
@@ -112,13 +113,23 @@ public class LyfestealEvents implements Listener {
 
         if (!player.hasPlayedBefore()) {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(defaultHealth);
+            Main.data.getConfig().set("players." + player.getUniqueId() + ".hearts", currentMaxHealth);
+            Main.data.saveConfig();
+            Main.data.reloadConfig();
         } else {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Main.data.getConfig().getDouble("players." + player.getUniqueId() + ".hearts"));
         }
-        if (!Main.data.getConfig().contains("players." + player.getUniqueId())) {
-            Main.data.getConfig().set("players." + player.getUniqueId() + ".hearts", currentMaxHealth);
+
+    }
+
+    @EventHandler
+    public static void onPlayerLeave (PlayerQuitEvent event) {
+
+            Player player = event.getPlayer();
+
+            Main.data.getConfig().set("players." + player.getUniqueId() + ".hearts", player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
             Main.data.saveConfig();
-        }
+            Main.data.reloadConfig();
 
     }
 }

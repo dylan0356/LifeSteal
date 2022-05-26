@@ -4,22 +4,48 @@ author: Dylan
 main: me.dylan.LyfeSteal.Main
 api-version: 1.18
 commands:
-  withdraw:
-    description: Withdraws hearts from you and gives to another player
-    usage: /<command> <amount> <player>
-    permission: lyfesteal.withdraw
+  hearts:
+    permission: lyfesteal.hearts
+    usage: /hearts
+    description: Get your current amount of hearts
+    aliases: [h]
     Permissions:
-      lyfesteal.withdraw:
-        description: Gives access to /withdraw
-        default: op
-  setmaxhealth:
-    description: Sets the max health of a player where each "heart" is 2
-    usage: /<command> <player> <health>
-    permission: lyfesteal.setmaxhealth
+      lyfesteal.hearts:
+        description: "Allows the player to see their current amount of hearts"
+        default: true
+  hearts.help:
+    permission: lyfesteal.hearts.help
+    usage: /hearts help
+    description: Get help on how to use the plugin
+    aliases: [h.help]
     Permissions:
-      lyfesteal.sethealth:
-        description: Gives access to /sethealth
+      lyfesteal.hearts.help:
+        description: "Allows the player to see the help menu"
+        default: true
+  hearts.give:
+    permission: lyfesteal.hearts.give
+    usage: /hearts give <player> <amount>
+    description: Give a player hearts
+    aliases: [hg]
+    Permissions:
+      lyfesteal.hearts.give.others:
+        default: true
+        description: Give hearts to other players
+        children:
+          lyfesteal.hearts.give:
+            description: Give hearts to other players
+  hearts.set:
+    permission: lyfesteal.hearts.set
+    usage: /hearts set <player> <amount>
+    description: Set a player's hearts
+    aliases: [hs]
+    Permissions:
+      lyfesteal.hearts.set.others:
+        description: Set other players hearts
         default: op
+        children:
+          lyfesteal.hearts.set:
+            description: Set your hearts
   tempban:
     description: Bans a player for a set amount of time
     usage: /<command> <player> <amount> <unit>
