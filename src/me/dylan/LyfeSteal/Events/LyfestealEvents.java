@@ -43,18 +43,29 @@ public class LyfestealEvents implements Listener {
         double killedHearts = killed.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         double killerHearts = killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
 
-        killer.sendMessage("You have gained " + (int) (lossOnDeath/2) + " heart!");
+        double defaultHealth = Main.config.getConfig().getDouble("defaultHealth");
+
+
         killed.sendMessage(ChatColor.RED + "You have lost " + (int) (lossOnDeath/2) + " heart!");
+
+        double maxHearts = Main.config.getConfig().getDouble("maxHearts");
 
 
         if (killedHearts - lossOnDeath <= 0) {
-            Main.data.getConfig().set("players." + killed.getUniqueId() + ".hearts", 20);
-            Main.data.getConfig().set("players." + killer.getUniqueId() + ".hearts", killerHearts + lossOnDeath);
-            Main.data.saveConfig();
-            Main.data.reloadConfig();
-            double killerMaxHealth = killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-            killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(killerMaxHealth + lossOnDeath);
-            killed.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+
+
+            if ((Main.data.getConfig().getDouble("players." + killer.getUniqueId() + ".hearts")) < maxHearts) {
+                Main.data.getConfig().set("players." + killer.getUniqueId() + ".hearts", killerHearts + lossOnDeath);
+                double killerMaxHealth = killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+                killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(killerMaxHealth + lossOnDeath);
+
+                killer.sendMessage("You have gained " + (int) (lossOnDeath/2) + " heart!");
+            } else {
+                killer.sendMessage(ChatColor.RED +"You have reached the max hearts!");
+            }
+
+            Main.data.getConfig().set("players." + killed.getUniqueId() + ".hearts", defaultHealth);
+            killed.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(defaultHealth);
 
             String[] banLength = Main.config.getConfig().getString("banLength").split(" ");
 
@@ -68,17 +79,25 @@ public class LyfestealEvents implements Listener {
             String message = BanCommands.getMSG(endOfBan);
 
             killed.kickPlayer("You have been DeathBanned for " + message);
+
         } else {
+
+            if ((Main.data.getConfig().getDouble("players." + killer.getUniqueId() + ".hearts")) <= maxHearts) {
+                Main.data.getConfig().set("players." + killer.getUniqueId() + ".hearts", killerHearts + lossOnDeath);
+                double killerMaxHealth = killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+                killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(killerMaxHealth + lossOnDeath);
+
+                killer.sendMessage("You have gained " + (int) (lossOnDeath/2) + " heart!");
+            } else {
+                killer.sendMessage(ChatColor.RED +"You have reached the max hearts!");
+            }
+
             Main.data.getConfig().set("players." + killed.getUniqueId() + ".hearts", killedHearts - lossOnDeath);
-            Main.data.getConfig().set("players." + killer.getUniqueId() + ".hearts", killerHearts + lossOnDeath);
-            Main.data.saveConfig();
-            Main.data.reloadConfig();
-            double killerMaxHealth = killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-            killer.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(killerMaxHealth + lossOnDeath);
             killed.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(killedHearts - lossOnDeath);
+
         }
-
-
+        Main.data.saveConfig();
+        Main.data.reloadConfig();
 
 
     }
@@ -93,6 +112,8 @@ public class LyfestealEvents implements Listener {
 
         if (!player.hasPlayedBefore()) {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(defaultHealth);
+        } else {
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(Main.data.getConfig().getDouble("players." + player.getUniqueId() + ".hearts"));
         }
         if (!Main.data.getConfig().contains("players." + player.getUniqueId())) {
             Main.data.getConfig().set("players." + player.getUniqueId() + ".hearts", currentMaxHealth);
